@@ -6,9 +6,6 @@
       "temperature": 0
     }
   },
-  "memory": {
-    "name": "ConversationBufferMemory"
-  },
   "prompt": {
     "template": "What is a good name for a company that makes {product}?",
     "input_variables": [
