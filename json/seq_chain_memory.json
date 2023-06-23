@@ -4,8 +4,15 @@
     "era", "title"
   ],
   "output_variables": [
-    "synopsis", "review"
+    "social_post_text"
   ],
+  "memory": {
+    "type": "SimpleMemory",
+    "memories": {
+      "time": "December 25th, 8pm PST",
+      "location": "Theater in the Park"
+    }
+  },
   "chains": [
     {
       "type": "LLMChain",
@@ -38,6 +45,22 @@
         ]
       },
       "output_key": "review"
+    },
+    {
+      "type": "LLMChain",
+      "llm": {
+        "name": "openai",
+        "args": {
+          "temperature": 0.7
+        }
+      },
+      "prompt": {
+        "template": "You are a social media manager for a theater company.  Given the title of play, the era it is set in, the date,time and location, the synopsis of the play, and the review of the play, it is your job to write a social media post for that play.\n\nHere is some context about the time and location of the play:\nDate and Time: {time}\nLocation: {location}\n\nPlay Synopsis:\n{synopsis}\nReview from a New York Times play critic of the above play:\n{review}\n\nSocial Media Post:",
+        "input_variables": [
+          "synopsis", "review", "time", "location"
+        ]
+      },
+      "output_key": "social_post_text"
     }
   ]
 }
