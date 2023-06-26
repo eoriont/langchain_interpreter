@@ -11,27 +11,27 @@ def chain_from_file(filename):
     return get_chain(cfg)
 
 
-def chain_from_str(s):
-    return get_chain(json.loads(s))
+def chain_from_str(s, **kwargs):
+    return get_chain(json.loads(s), **kwargs)
 
 
-def get_chain(cfg):
+def get_chain(cfg, **kwargs):
     if cfg["type"] == "LLMChain":
-        return get_llm_chain(cfg)
+        return get_llm_chain(cfg, **kwargs)
     if cfg["type"] == "SimpleSequentialChain":
-        return get_simple_sequential_chain(cfg)
+        return get_simple_sequential_chain(cfg, **kwargs)
     if cfg["type"] == "SequentialChain":
-        return get_sequential_chain(cfg)
+        return get_sequential_chain(cfg, **kwargs)
 
 
-def get_llm(cfg):
+def get_llm(cfg, **kwargs):
     llm_type = type_to_cls_dict[cfg["name"]]
-    llm = llm_type(**cfg["args"])
+    llm = llm_type(**cfg["args"], openai_api_key=kwargs["openai_api_key"])
     return llm
 
 
-def get_llm_chain(cfg):
-    llm = get_llm(cfg["llm"])
+def get_llm_chain(cfg, **kwargs):
+    llm = get_llm(cfg["llm"], **kwargs)
     prompt = get_prompt(cfg["prompt"])
     output_key = cfg.get("output_key", "text")
     memory = try_memory(cfg)
@@ -39,8 +39,8 @@ def get_llm_chain(cfg):
     return llm_chain
 
 
-def get_simple_sequential_chain(cfg):
-    chains = [get_chain(chain) for chain in cfg["chains"]]
+def get_simple_sequential_chain(cfg, **kwargs):
+    chains = [get_chain(chain, **kwargs) for chain in cfg["chains"]]
     memory = try_memory(cfg)
     ss_chain = SimpleSequentialChain(chains=chains, verbose=True, memory=memory)
     return ss_chain
@@ -51,8 +51,8 @@ def get_prompt(cfg):
     return prompt
 
 
-def get_sequential_chain(cfg):
-    chains = [get_chain(chain) for chain in cfg["chains"]]
+def get_sequential_chain(cfg, **kwargs):
+    chains = [get_chain(chain, **kwargs) for chain in cfg["chains"]]
     input_variables = cfg["input_variables"]
     output_variables = cfg["output_variables"]
     memory = try_memory(cfg)
