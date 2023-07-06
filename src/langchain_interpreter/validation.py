@@ -19,11 +19,27 @@ def get_validator():
 
 
 def validate_chain(json):
+    """Validate chain template json against json schema.
+
+    Args:
+        json (string): The json to validate
+
+    Raises:
+        ValidationError: The schema validation error
+    """
     validator = get_validator()
     validator.validate(json)
 
 
 def validate_file(path):
+    """Validate chain template json against json schema.
+
+    Args:
+        path (string): The path to the file containing json
+
+    Raises:
+        ValidationError: The schema validation error
+    """
     with open(path) as f:
         cfg = json.load(f)
     validate_chain(cfg)
