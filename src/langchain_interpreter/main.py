@@ -125,6 +125,9 @@ def get_conversation_buffer_memory(cfg, **kwargs):
 
 
 def parse_history(history: str):
+    if len(history) == 0:
+        return []
+
     lines = history.split("\n")
     ctx = []
 
