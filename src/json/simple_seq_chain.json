@@ -4,7 +4,7 @@
     {
       "type": "LLMChain",
       "llm": {
-        "name": "openai",
+        "type": "openai",
         "args": {
           "temperature": 0
         }
@@ -19,7 +19,7 @@
     {
       "type": "LLMChain",
       "llm": {
-        "name": "openai",
+        "type": "openai",
         "args": {
           "temperature": 0
         }
