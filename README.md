@@ -31,3 +31,10 @@ This command cleans the html out:
 cd docs
 make clean
 ```
+
+## For examples
+
+Install the project:
+```
+pip install -e .
+```

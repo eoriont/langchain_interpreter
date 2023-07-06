@@ -7,6 +7,7 @@ from langchain.chains import (
 from langchain import PromptTemplate, OpenAI, LLMChain
 from langchain.memory import SimpleMemory, ConversationBufferMemory
 from langchain.llms import type_to_cls_dict
+from langchain_interpreter import validate_chain
 import json
 
 
@@ -18,10 +19,14 @@ def chain_from_file(filename, **kwargs):
 
     Returns:
         chain: the chain specified by the json template.
+
+    Raises:
+        ValidationError:
     """
 
     with open(filename) as f:
         cfg = json.load(f)
+    validate_chain(cfg)
     return get_chain(cfg, **kwargs)
 
 
@@ -35,7 +40,9 @@ def chain_from_str(s, **kwargs):
         chain: the chain specified by the json template.
     """
 
-    return get_chain(json.loads(s), **kwargs)
+    cfg = json.loads(s)
+    validate_chain(cfg)
+    return get_chain(cfg, **kwargs)
 
 
 def get_chain(cfg, **kwargs):
@@ -58,7 +65,8 @@ def get_conversation_chain(cfg, **kwargs):
 
 
 def get_llm(cfg, **kwargs):
-    llm_type = type_to_cls_dict[cfg["name"]]
+    # TODO: restrict types you can use
+    llm_type = type_to_cls_dict[cfg["type"]]
     llm = llm_type(**cfg["args"], openai_api_key=kwargs.get("openai_api_key"))
     return llm
 
