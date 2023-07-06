@@ -1,6 +1,10 @@
 # Langchain Interpreter
 
+[![Documentation Status](https://readthedocs.org/projects/langchain-interpreter/badge/?version=latest)](https://langchain-interpreter.readthedocs.io/en/latest/?badge=latest)
+
 This project aims to allow for langchain pipelines to be created from a config file.
+
+Documentation: https://langchain-interpreter.readthedocs.io/
 
 ## To publish
 
