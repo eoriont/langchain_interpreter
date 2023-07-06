@@ -1,19 +1,24 @@
 {
-  "type": "ConversationChain",
-  "llm": {
-    "type": "openai",
-    "args": {
-      "temperature": 0.7
+  "name": "Conversation Buffer Memory Chain",
+  "description": "A chain for building a simple chatbot.",
+  "template_version": "0.0.5",
+  "chain": {
+    "type": "ConversationChain",
+    "llm": {
+      "type": "openai",
+      "args": {
+        "temperature": 0.7
+      }
+    },
+    "memory": {
+      "type": "ConversationBufferMemory",
+      "context": [
+        {"input": "hi"},
+        {"output": "whats up"},
+        {"input": "not much. what about you?"},
+        {"output": "I've been learning about linear algebra recently. It's really interesting!"}
+      ],
+      "history": "Human: hi\nAI: whats up\nHuman: not much. what about you?\nAI: I've been learning about linear algebra recently. It's really interesting!"
     }
-  },
-  "memory": {
-    "type": "ConversationBufferMemory",
-    "context": [
-      {"input": "hi"},
-      {"output": "whats up"},
-      {"input": "not much. what about you?"},
-      {"output": "I've been learning about linear algebra recently. It's really interesting!"}
-    ],
-    "history": "Human: hi\nAI: whats up\nHuman: not much. what about you?\nAI: I've been learning about linear algebra recently. It's really interesting!"
   }
 }

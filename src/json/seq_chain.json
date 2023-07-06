@@ -1,43 +1,48 @@
 {
-  "type": "SequentialChain",
-  "input_variables": [
-    "era", "title"
-  ],
-  "output_variables": [
-    "synopsis", "review"
-  ],
-  "chains": [
-    {
-      "type": "LLMChain",
-      "llm": {
-        "type": "openai",
-        "args": {
-          "temperature": 0.7
-        }
+  "name": "Sequential Chain",
+  "description": "An example sequential chain.",
+  "template_version": "0.0.5",
+  "chain": {
+    "type": "SequentialChain",
+    "input_variables": [
+      "era", "title"
+    ],
+    "output_variables": [
+      "synopsis", "review"
+    ],
+    "chains": [
+      {
+        "type": "LLMChain",
+        "llm": {
+          "type": "openai",
+          "args": {
+            "temperature": 0.7
+          }
+        },
+        "prompt": {
+          "template": "You are a playwright. Given the title of play and the era it is set in, it is your job to write a synopsis for that title.\n\nTitle: {title}\nEra: {era}\nPlaywright: This is a synopsis for the above play:",
+          "input_variables": [
+            "title", "era"
+          ]
+        },
+        "output_key": "synopsis"
       },
-      "prompt": {
-        "template": "You are a playwright. Given the title of play and the era it is set in, it is your job to write a synopsis for that title.\n\nTitle: {title}\nEra: {era}\nPlaywright: This is a synopsis for the above play:",
-        "input_variables": [
-          "title", "era"
-        ]
-      },
-      "output_key": "synopsis"
-    },
-    {
-      "type": "LLMChain",
-      "llm": {
-        "type": "openai",
-        "args": {
-          "temperature": 0.7
-        }
-      },
-      "prompt": {
-        "template": "You are a play critic from the New York Times. Given the synopsis of play, it is your job to write a review for that play.\n\nPlay Synopsis:\n{synopsis}\nReview from a New York Times play critic of the above play:",
-        "input_variables": [
-          "synopsis"
-        ]
-      },
-      "output_key": "review"
-    }
-  ]
+      {
+        "type": "LLMChain",
+        "llm": {
+          "type": "openai",
+          "args": {
+            "temperature": 0.7
+          }
+        },
+        "prompt": {
+          "template": "You are a play critic from the New York Times. Given the synopsis of play, it is your job to write a review for that play.\n\nPlay Synopsis:\n{synopsis}\nReview from a New York Times play critic of the above play:",
+          "input_variables": [
+            "synopsis"
+          ]
+        },
+        "output_key": "review"
+      }
+    ]
+  }
 }

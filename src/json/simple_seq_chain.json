@@ -1,35 +1,40 @@
 {
-  "type": "SimpleSequentialChain",
-  "chains": [
-    {
-      "type": "LLMChain",
-      "llm": {
-        "type": "openai",
-        "args": {
-          "temperature": 0
+  "name": "Simple Sequential Chain",
+  "description": "An example simple sequential chain",
+  "template_version": "0.0.5",
+  "chain": {
+    "type": "SimpleSequentialChain",
+    "chains": [
+      {
+        "type": "LLMChain",
+        "llm": {
+          "type": "openai",
+          "args": {
+            "temperature": 0
+          }
+        },
+        "prompt": {
+          "template": "You are a playwright. Given the title of play, it is your job to write a synopsis for that title. \n\nTitle: {title}\nPlaywright: This is a synopsis for the above play:",
+          "input_variables": [
+            "title"
+          ]
         }
       },
-      "prompt": {
-        "template": "You are a playwright. Given the title of play, it is your job to write a synopsis for that title. \n\nTitle: {title}\nPlaywright: This is a synopsis for the above play:",
-        "input_variables": [
-          "title"
-        ]
-      }
-    },
-    {
-      "type": "LLMChain",
-      "llm": {
-        "type": "openai",
-        "args": {
-          "temperature": 0
+      {
+        "type": "LLMChain",
+        "llm": {
+          "type": "openai",
+          "args": {
+            "temperature": 0
+          }
+        },
+        "prompt": {
+          "template": "You are a play critic from the New York Times. Given the synopsis of play, it is your job to write a review for that play.\n\nPlay Synopsis:\n{synopsis}\nReview from a New York Times play critic of the above play:",
+          "input_variables": [
+            "synopsis"
+          ]
         }
-      },
-      "prompt": {
-        "template": "You are a play critic from the New York Times. Given the synopsis of play, it is your job to write a review for that play.\n\nPlay Synopsis:\n{synopsis}\nReview from a New York Times play critic of the above play:",
-        "input_variables": [
-          "synopsis"
-        ]
       }
-    }
-  ]
+    ]
+  }
 }

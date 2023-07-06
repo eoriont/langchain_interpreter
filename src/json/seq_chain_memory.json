@@ -1,66 +1,71 @@
 {
-  "type": "SequentialChain",
-  "input_variables": [
-    "era", "title"
-  ],
-  "output_variables": [
-    "social_post_text"
-  ],
-  "memory": {
-    "type": "SimpleMemory",
-    "memories": {
-      "time": "December 25th, 8pm PST",
-      "location": "Theater in the Park"
-    }
-  },
-  "chains": [
-    {
-      "type": "LLMChain",
-      "llm": {
-        "type": "openai",
-        "args": {
-          "temperature": 0.7
-        }
-      },
-      "prompt": {
-        "template": "You are a playwright. Given the title of play and the era it is set in, it is your job to write a synopsis for that title.\n\nTitle: {title}\nEra: {era}\nPlaywright: This is a synopsis for the above play:",
-        "input_variables": [
-          "title", "era"
-        ]
-      },
-      "output_key": "synopsis"
+  "name": "Sequential Chain with Simple Memory",
+  "description": "An example sequential chain with simple memory.",
+  "template_version": "0.0.5",
+  "chain": {
+    "type": "SequentialChain",
+    "input_variables": [
+      "era", "title"
+    ],
+    "output_variables": [
+      "social_post_text"
+    ],
+    "memory": {
+      "type": "SimpleMemory",
+      "memories": {
+        "time": "December 25th, 8pm PST",
+        "location": "Theater in the Park"
+      }
     },
-    {
-      "type": "LLMChain",
-      "llm": {
-        "type": "openai",
-        "args": {
-          "temperature": 0.7
-        }
+    "chains": [
+      {
+        "type": "LLMChain",
+        "llm": {
+          "type": "openai",
+          "args": {
+            "temperature": 0.7
+          }
+        },
+        "prompt": {
+          "template": "You are a playwright. Given the title of play and the era it is set in, it is your job to write a synopsis for that title.\n\nTitle: {title}\nEra: {era}\nPlaywright: This is a synopsis for the above play:",
+          "input_variables": [
+            "title", "era"
+          ]
+        },
+        "output_key": "synopsis"
       },
-      "prompt": {
-        "template": "You are a play critic from the New York Times. Given the synopsis of play, it is your job to write a review for that play.\n\nPlay Synopsis:\n{synopsis}\nReview from a New York Times play critic of the above play:",
-        "input_variables": [
-          "synopsis"
-        ]
+      {
+        "type": "LLMChain",
+        "llm": {
+          "type": "openai",
+          "args": {
+            "temperature": 0.7
+          }
+        },
+        "prompt": {
+          "template": "You are a play critic from the New York Times. Given the synopsis of play, it is your job to write a review for that play.\n\nPlay Synopsis:\n{synopsis}\nReview from a New York Times play critic of the above play:",
+          "input_variables": [
+            "synopsis"
+          ]
+        },
+        "output_key": "review"
       },
-      "output_key": "review"
-    },
-    {
-      "type": "LLMChain",
-      "llm": {
-        "type": "openai",
-        "args": {
-          "temperature": 0.7
-        }
-      },
-      "prompt": {
-        "template": "You are a social media manager for a theater company.  Given the title of play, the era it is set in, the date,time and location, the synopsis of the play, and the review of the play, it is your job to write a social media post for that play.\n\nHere is some context about the time and location of the play:\nDate and Time: {time}\nLocation: {location}\n\nPlay Synopsis:\n{synopsis}\nReview from a New York Times play critic of the above play:\n{review}\n\nSocial Media Post:",
-        "input_variables": [
-          "synopsis", "review", "time", "location"
-        ]
-      },
-      "output_key": "social_post_text"
-    }
-  ]
+      {
+        "type": "LLMChain",
+        "llm": {
+          "type": "openai",
+          "args": {
+            "temperature": 0.7
+          }
+        },
+        "prompt": {
+          "template": "You are a social media manager for a theater company.  Given the title of play, the era it is set in, the date,time and location, the synopsis of the play, and the review of the play, it is your job to write a social media post for that play.\n\nHere is some context about the time and location of the play:\nDate and Time: {time}\nLocation: {location}\n\nPlay Synopsis:\n{synopsis}\nReview from a New York Times play critic of the above play:\n{review}\n\nSocial Media Post:",
+          "input_variables": [
+            "synopsis", "review", "time", "location"
+          ]
+        },
+        "output_key": "social_post_text"
+      }
+    ]
+  }
 }

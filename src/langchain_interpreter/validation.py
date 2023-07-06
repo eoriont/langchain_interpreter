@@ -4,16 +4,18 @@ import json
 
 
 def get_validator():
+    template_resource = Resource.from_contents(template_schema)
     chain_resource = Resource.from_contents(chain_schema)
     llm_resource = Resource.from_contents(llm_schema)
     prompt_resource = Resource.from_contents(prompt_schema)
     memory_resource = Resource.from_contents(memory_schema)
 
     registry = chain_resource @ (
-        llm_resource @ (prompt_resource @ (memory_resource @ Registry()))
+        llm_resource
+        @ (prompt_resource @ (memory_resource @ (template_resource @ Registry())))
     )
 
-    validator = Draft202012Validator(chain_schema, registry=registry)
+    validator = Draft202012Validator(template_schema, registry=registry)
 
     return validator
 
@@ -45,10 +47,32 @@ def validate_file(path):
     validate_chain(cfg)
 
 
-chain_schema = {
+template_schema = {
     "$id": "https://example.com/template.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "LangChain Template",
+    "description": "A langchain template",
+    "type": "object",
+    "properties": {
+        "name": {"type": "string", "description": "The name of the langchain template"},
+        "description": {
+            "type": "string",
+            "description": "Description of the langchain template",
+        },
+        "template_version": {
+            "type": "string",
+            "description": "Version of the langchain template interpreter.",
+        },
+        "chain": {"$ref": "https://example.com/chain.schema.json"},
+    },
+    "additionalProperties": False,
+    "required": ["name", "template_version", "chain"],
+}
+
+chain_schema = {
+    "$id": "https://example.com/chain.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "LangChain Chain",
     "description": "A langchain chain",
     "type": "object",
     "properties": {
@@ -60,7 +84,7 @@ chain_schema = {
         "chains": {
             "type": "array",
             "description": "A list of chains to be executed in the sequential chain.",
-            "items": {"$ref": "https://example.com/template.schema.json"},
+            "items": {"$ref": "https://example.com/chain.schema.json"},
         },
         "prompt": {"$ref": "https://example.com/prompt.schema.json"},
         "memory": {"$ref": "https://example.com/memory.schema.json"},

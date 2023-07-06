@@ -1,15 +1,20 @@
 {
-  "type": "LLMChain",
-  "llm": {
-    "type": "openai",
-    "args": {
-      "temperature": 0
+  "name": "LLM Chain",
+  "description": "A simple LLM chain",
+  "template_version": "0.0.5",
+  "chain": {
+    "type": "LLMChain",
+    "llm": {
+      "type": "openai",
+      "args": {
+        "temperature": 0
+      }
+    },
+    "prompt": {
+      "template": "What is a good name for a company that makes {product}?",
+      "input_variables": [
+        "product"
+      ]
     }
-  },
-  "prompt": {
-    "template": "What is a good name for a company that makes {product}?",
-    "input_variables": [
-      "product"
-    ]
   }
 }
