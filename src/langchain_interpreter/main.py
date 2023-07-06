@@ -11,12 +11,30 @@ import json
 
 
 def chain_from_file(filename, **kwargs):
+    """Generate a LangChain Chain from a json file.
+
+    Args:
+        filename (str): the path to the file containing json template.
+
+    Returns:
+        chain: the chain specified by the json template.
+    """
+
     with open(filename) as f:
         cfg = json.load(f)
     return get_chain(cfg, **kwargs)
 
 
 def chain_from_str(s, **kwargs):
+    """Generate a LangChain Chain from a json string.
+
+    Args:
+        s (str): the json string to turn into a chain
+
+    Returns:
+        chain: the chain specified by the json template.
+    """
+
     return get_chain(json.loads(s), **kwargs)
 
 
