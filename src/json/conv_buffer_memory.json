@@ -11,14 +11,7 @@
       }
     },
     "memory": {
-      "type": "ConversationBufferMemory",
-      "context": [
-        {"input": "hi"},
-        {"output": "whats up"},
-        {"input": "not much. what about you?"},
-        {"output": "I've been learning about linear algebra recently. It's really interesting!"}
-      ],
-      "history": "Human: hi\nAI: whats up\nHuman: not much. what about you?\nAI: I've been learning about linear algebra recently. It's really interesting!"
+      "type": "ConversationBufferMemory"
     }
   }
 }

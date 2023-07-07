@@ -27,7 +27,7 @@ def chain_from_file(filename, **kwargs):
     with open(filename) as f:
         cfg = json.load(f)
     validate_chain(cfg)
-    return get_chain(cfg, **kwargs)
+    return get_chain(cfg["chain"], **kwargs)
 
 
 def chain_from_str(s, **kwargs):
@@ -42,7 +42,7 @@ def chain_from_str(s, **kwargs):
 
     cfg = json.loads(s)
     validate_chain(cfg)
-    return get_chain(cfg, **kwargs)
+    return get_chain(cfg["chain"], **kwargs)
 
 
 def get_chain(cfg, **kwargs):
