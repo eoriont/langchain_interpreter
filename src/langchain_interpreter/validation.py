@@ -4,16 +4,13 @@ import json
 
 
 def get_validator():
-    template_resource = Resource.from_contents(template_schema)
-    chain_resource = Resource.from_contents(chain_schema)
-    llm_resource = Resource.from_contents(llm_schema)
-    prompt_resource = Resource.from_contents(prompt_schema)
-    memory_resource = Resource.from_contents(memory_schema)
-
-    registry = chain_resource @ (
-        llm_resource
-        @ (prompt_resource @ (memory_resource @ (template_resource @ Registry())))
-    )
+    registry = Resource.from_contents(template_schema) @ Registry()
+    registry = Resource.from_contents(chain_schema) @ registry
+    registry = Resource.from_contents(llm_schema) @ registry
+    registry = Resource.from_contents(prompt_schema) @ registry
+    registry = Resource.from_contents(memory_schema) @ registry
+    registry = Resource.from_contents(retriever_schema) @ registry
+    registry = Resource.from_contents(vectorstore_schema) @ registry
 
     validator = Draft202012Validator(template_schema, registry=registry)
 
@@ -102,6 +99,11 @@ chain_schema = {
             "type": "string",
             "description": "The key for the output of this specific chain.",
         },
+        "chain_type": {
+            "type": "string",
+            "description": "For retrieverqa, the chaintype",
+        },
+        "retriever": {"$ref": "https://example.com/retriever.schema.json"},
     },
     "additionalProperties": False,
     "required": ["type"],
@@ -172,6 +174,48 @@ memory_schema = {
         "history": {
             "type": "string",
             "description": "String of previous conversation.",
+        },
+    },
+    "additionalProperties": False,
+    "required": ["type"],
+}
+
+retriever_schema = {
+    "$id": "https://example.com/retriever.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "LangChain Retriever",
+    "description": "A langchain retriever object",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "description": "The type of retriever.",
+        },
+        "vectorstore": {"$ref": "https://example.com/vectorstore.schema.json"},
+    },
+    "additionalProperties": False,
+    "required": ["type"],
+}
+
+
+vectorstore_schema = {
+    "$id": "https://example.com/vectorstore.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "LangChain Vector Store",
+    "description": "A langchain vector store object",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "description": "The type of vector store.",
+        },
+        "host": {
+            "type": "string",
+            "description": "The host for the vector store service.",
+        },
+        "port": {
+            "type": "string",
+            "description": "The port of the vector store service.",
         },
     },
     "additionalProperties": False,

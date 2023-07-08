@@ -3,12 +3,18 @@ from langchain.chains import (
     SimpleSequentialChain,
     SequentialChain,
     ConversationChain,
+    RetrievalQA,
 )
 from langchain import PromptTemplate, OpenAI, LLMChain
 from langchain.memory import SimpleMemory, ConversationBufferMemory
 from langchain.llms import type_to_cls_dict
 from langchain_interpreter import validate_chain
 import json
+import chromadb
+from langchain.vectorstores import Chroma
+from pymongo import MongoClient
+from langchain.vectorstores import MongoDBAtlasVectorSearch
+from langchain.embeddings.openai import OpenAIEmbeddings
 
 
 def chain_from_file(filename, **kwargs):
@@ -48,12 +54,64 @@ def chain_from_str(s, **kwargs):
 def get_chain(cfg, **kwargs):
     if cfg["type"] == "LLMChain":
         return get_llm_chain(cfg, **kwargs)
-    if cfg["type"] == "SimpleSequentialChain":
+    elif cfg["type"] == "SimpleSequentialChain":
         return get_simple_sequential_chain(cfg, **kwargs)
-    if cfg["type"] == "SequentialChain":
+    elif cfg["type"] == "SequentialChain":
         return get_sequential_chain(cfg, **kwargs)
-    if cfg["type"] == "ConversationChain":
+    elif cfg["type"] == "ConversationChain":
         return get_conversation_chain(cfg, **kwargs)
+    elif cfg["type"] == "RetrievalQA":
+        return get_retrieval_qa(cfg, **kwargs)
+    else:
+        raise NotImplementedError(f"{cfg['type']} isn't supported yet!")
+
+
+def get_retrieval_qa(cfg, **kwargs):
+    llm = get_llm(cfg["llm"], **kwargs)
+    chain_type = cfg["chain_type"]
+
+    retriever = get_retriever(cfg["retriever"], **kwargs)
+    return RetrievalQA.from_chain_type(
+        llm=llm, chain_type=chain_type, retriever=retriever
+    )
+
+
+def get_retriever(cfg, **kwargs):
+    if cfg["type"] == "vectorstore":
+        vectorstore = get_vectorstore(cfg["vectorstore"], **kwargs)
+        return vectorstore.as_retriever()
+
+
+def get_vectorstore(cfg, **kwargs):
+    if cfg["type"] == "ChromaDB":
+        return get_chromadb(cfg, **kwargs)
+    if cfg["type"] == "MongoDB":
+        return get_mongodb(cfg, **kwargs)
+
+
+def get_mongodb(cfg, **kwargs):
+    cluster = cfg["host"]
+    client = MongoClient(cluster)
+
+    # TODO: make these inputs
+    db_name = "langchain_db"
+    collection_name = "langchain_col"
+    collection = client[db_name][collection_name]
+    # index_name = "langchain_demo"
+
+    docsearch = MongoDBAtlasVectorSearch(collection, OpenAIEmbeddings())
+
+    return docsearch
+
+
+def get_chromadb(cfg, **kwargs) -> Chroma:
+    settings = chromadb.Settings(
+        chroma_api_impl="rest",
+        chroma_server_host=cfg["host"],
+        chroma_server_http_port=cfg["port"],
+    )
+    db = Chroma(client_settings=settings)
+    return db
 
 
 def get_conversation_chain(cfg, **kwargs):

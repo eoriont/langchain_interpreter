@@ -1,0 +1,24 @@
+{
+  "name": "ChromaDB Chain",
+  "description": "An example chain using ChromaDB as a retriever.",
+  "template_version": "0.0.7",
+  "chain": {
+    "type": "RetrievalQA",
+    "chain_type": "stuff",
+    "llm": {
+      "type": "openai",
+      "args": {
+        "temperature": 0
+      }
+    },
+    "retriever": {
+      "type": "vectorstore",
+      "vectorstore": {
+        "type": "MongoDB",
+        "host": "mongodb+srv://elijahotarr:d5xBKoh2Idiepq41@cluster0.jguukeo.mongodb.net/?retryWrites=true&w=majority",
+        "port": ""
+      }
+
+    }
+  }
+}
