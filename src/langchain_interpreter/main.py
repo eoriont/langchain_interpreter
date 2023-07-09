@@ -85,8 +85,10 @@ def get_retriever(cfg, **kwargs):
 def get_vectorstore(cfg, **kwargs):
     if cfg["type"] == "ChromaDB":
         return get_chromadb(cfg, **kwargs)
-    if cfg["type"] == "MongoDB":
+    elif cfg["type"] == "MongoDB":
         return get_mongodb(cfg, **kwargs)
+    else:
+        raise NotImplementedError(cfg["type"])
 
 
 def get_mongodb(cfg, **kwargs):
@@ -110,7 +112,7 @@ def get_chromadb(cfg, **kwargs) -> Chroma:
         chroma_server_host=cfg["host"],
         chroma_server_http_port=cfg["port"],
     )
-    db = Chroma(client_settings=settings)
+    db = Chroma(client_settings=settings, embedding_function=OpenAIEmbeddings())
     return db
 
 
