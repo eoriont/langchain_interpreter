@@ -15,9 +15,9 @@ Run the container
 docker-compose up --build -d
 ```
 
+2. Download [state_of_the_union.txt](https://raw.githubusercontent.com/hwchase17/langchain/master/docs/extras/modules/state_of_the_union.txt)
 
-
-3. Get your mongo uri, and save the following example langchain template to `chromadbvector_chain.json`.
+3. Save the following example langchain template to `chromadbvector_chain.json`.
 
 ```json
 {

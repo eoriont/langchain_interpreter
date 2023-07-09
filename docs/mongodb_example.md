@@ -2,7 +2,9 @@
 
 1. Setup MongoDB instance on Atlas (or wherever is convenient)
 
-2. Add the index. On the database cluster page, to to the search tab > create index, paste the following into the JSON editor:
+2. Download [state_of_the_union.txt](https://raw.githubusercontent.com/hwchase17/langchain/master/docs/extras/modules/state_of_the_union.txt)
+
+3. Add the index. On the database cluster page, to to the search tab > create index, paste the following into the JSON editor:
 
 ```json
 {
@@ -19,7 +21,7 @@
 }
 ```
 
-3. Get your mongo uri, and save the following example langchain template to `mongodbvector_chain.json`.
+4. Get your mongo uri, and save the following example langchain template to `mongodbvector_chain.json`.
 
 > Todo: Don't have password straight in the schema
 
@@ -51,7 +53,7 @@
 
 ```
 
-4. Seed your database:
+5. Seed your database:
 
 ```py
 import os
@@ -93,7 +95,7 @@ query = "What did the president say about Ketanji Brown Jackson"
 docsearch.similarity_search(query, k=10)
 ```
 
-5. Run the chain
+6. Run the chain
 
 ```py
 from langchain_interpreter import chain_from_file
