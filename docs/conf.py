@@ -9,7 +9,7 @@
 project = "LangChain Interpreter"
 copyright = "2023, Elijah Tarr"
 author = "Elijah Tarr"
-release = "0.0.6"
+release = "0.0.7"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
