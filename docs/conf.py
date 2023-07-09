@@ -9,7 +9,7 @@
 project = "LangChain Interpreter"
 copyright = "2023, Elijah Tarr"
 author = "Elijah Tarr"
-release = "0.0.4"
+release = "0.0.6"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -19,6 +19,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.coverage",
+    "myst_parser",
 ]
 
 templates_path = ["_templates"]
@@ -30,6 +31,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 html_theme = "furo"
 html_static_path = ["_static"]
+
+source_suffix = [".rst", ".md"]
 
 import os
 import sys

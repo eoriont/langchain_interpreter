@@ -12,6 +12,8 @@ Welcome to LangChain Interpreter's documentation!
 
    langchain_interpreter
    modules
+   mongodb_example.md
+   chromadb_example.md
 
 
 Indices and tables

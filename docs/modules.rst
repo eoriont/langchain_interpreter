@@ -1,4 +1,4 @@
-langchain_interpreter
+Modules
 =====================
 
 .. toctree::
