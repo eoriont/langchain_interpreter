@@ -11,10 +11,14 @@ Documentation: https://langchain-interpreter.readthedocs.io/
 1. Update version number in `pyproject.toml`
 
 2.
-        python -m build
+```
+python -m build
+```
 
 3.
-        twine upload --skip-existing dist/*
+```
+twine upload --skip-existing dist/*
+```
 
 ## Documentation
 
